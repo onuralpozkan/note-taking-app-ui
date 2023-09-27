@@ -1,0 +1,17 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+  max-width: unset;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+svg {
+  max-width: 24px;
+  max-height: 24px;
+}
