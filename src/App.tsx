@@ -95,7 +95,7 @@ function App() {
     };
     fetch('http://localhost:3000/note/' + selectedNoteId, options)
       .then((res) => res.json())
-      .then((data) => toast.info(data.message));
+      .then((data) => toast.warn(data.message));
     setTimeout(() => {
       getNotes();
     }, DELAY_TIME);
