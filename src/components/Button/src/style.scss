@@ -1,5 +1,8 @@
 .item {
   &__button {
+    &:disabled {
+      pointer-events: none;
+    }
     height: var(--item-height);
     width: 150px;
     padding: 0 0.5rem;
