@@ -1,4 +1,5 @@
 import { useEffect, useState, Fragment, useRef } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 /* Third Party */
 /* ReactQuill Text Editor */
 import ReactQuill from 'react-quill';
@@ -14,7 +15,7 @@ import { Delete, Save, NoteAdd, StickyNote2 } from '@mui/icons-material';
 import Button from '@/components/Button';
 /* Styles */
 import './Home.scss';
-import { Navigate } from 'react-router-dom';
+
 interface User {
   user: boolean;
 }
@@ -31,6 +32,12 @@ function Home({ user }: User) {
   const [textareaValue, setTextareaValue] = useState('');
   const [selectedNoteId, setSetselectedNoteId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    toast.success(location.state);
+  }, []);
 
   const DELAY_TIME = 500;
   const addNote = () => {
@@ -149,7 +156,7 @@ function Home({ user }: User) {
                     label={item.label}
                     onClick={() => selectNote(item.id)}
                     icon={<StickyNote2 />}
-                    isSelected={item.selected}
+                    selected={item.selected}
                   />
                 </Fragment>
               );

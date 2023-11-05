@@ -1,16 +1,19 @@
-/* Toastify alerts */
+import { useState } from 'react';
+/* third party */
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+/* components */
 import Button from '@/components/Button';
+/* styles */
 import './Login.scss';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 type Props = { setUser: React.Dispatch<React.SetStateAction<boolean>> };
 
 const Login = ({ setUser }: Props) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -33,9 +36,8 @@ const Login = ({ setUser }: Props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          toast.success(res.message);
           setUser(true);
-          navigate('/home', { replace: true });
+          navigate('/home', { replace: true, state: res.message });
         } else {
           toast.error(res.message);
           setUser(false);

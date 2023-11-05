@@ -4,13 +4,13 @@ import './style.scss';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   icon?: React.ReactNode;
-  isSelected?: boolean;
+  selected?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
-  const { icon, label = 'Label', isSelected } = props;
+  const { icon, label = 'Label', selected } = props;
   return (
-    <button className={`item__button ${isSelected ? 'item__button--selected' : ''}`} {...props}>
+    <button className={`item__button ${selected ? 'item__button--selected' : ''}`} {...props}>
       <span className="item__label">{label}</span>
       {icon && <span className="item__icon flex-center">{icon}</span>}
     </button>

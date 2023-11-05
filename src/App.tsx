@@ -1,32 +1,43 @@
-import { useEffect, useState, Fragment, useRef } from 'react';
+import { useState, lazy, Suspense } from 'react';
 /* Third Party */
-/* ReactQuill Text Editor */
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { Routes, Route } from 'react-router-dom';
 /* Loading Spinner */
 import { PuffLoader } from 'react-spinners';
-/* Toastify alerts */
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-/* Icons */
-import { Delete, Save, NoteAdd, StickyNote2 } from '@mui/icons-material';
-/* Components */
-import Button from './components/Button';
 /* Styles */
-import { Link, RouterProvider, Routes, Route } from 'react-router-dom';
 import './App.scss';
-import Login from './pages/Auth';
-import Home from './pages/HomePage';
+
+const Home = lazy(() => import('./pages/HomePage'));
+const Login = lazy(() => import('./pages/Auth'));
 
 function App() {
   const [user, setUser] = useState(false);
-  console.log({ user });
 
   return (
     <Routes>
-      <Route index element={<Login setUser={setUser} />} />
-      <Route path="auth" element={<Login setUser={setUser} />} />
-      <Route path="home" element={<Home user={user} />} />
+      <Route
+        index
+        element={
+          <Suspense fallback={<PuffLoader />}>
+            <Login setUser={setUser} />
+          </Suspense>
+        }
+      />
+      <Route
+        path="auth"
+        element={
+          <Suspense fallback={<PuffLoader />}>
+            <Login setUser={setUser} />
+          </Suspense>
+        }
+      />
+      <Route
+        path="home"
+        element={
+          <Suspense fallback={<PuffLoader />}>
+            <Home user={user} />
+          </Suspense>
+        }
+      />
       <Route path="*" element={<div>404</div>} />
     </Routes>
   );
