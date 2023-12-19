@@ -20,9 +20,9 @@ interface User {
   user: boolean;
 }
 function Home({ user }: User) {
-  if (!user) {
-    return <Navigate to="/auth" replace />;
-  }
+  // if (!user) {
+  //   return <Navigate to="/auth" replace />;
+  // }
 
   const [data, setData] = useState<{ label: string; id: string; selected: boolean; note: string }[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
@@ -33,179 +33,58 @@ function Home({ user }: User) {
   const [selectedNoteId, setSetselectedNoteId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const [noteList, setNoteList] = useState<string[]>([]);
   const location = useLocation();
 
-  useEffect(() => {
-    toast.success(location.state);
-  }, []);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const DELAY_TIME = 500;
   const addNote = () => {
-    if (labelValue === '') {
-      newNoteInput.current?.focus();
-    }
-    const id = crypto.randomUUID();
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-      method: 'POST',
-      body: JSON.stringify({
-        id: id,
-        note: '',
-        selected: true,
-        label: labelValue,
-      }),
-    };
-    fetch('http://localhost:3000/add-note', options)
-      .then((res) => res.json())
-      .then((data) => toast.info(data.message));
-
-    setLabelValue('');
-
-    setTimeout(() => {
-      getNotes();
-    }, DELAY_TIME);
-  };
-  const selectNote = (id: string) => {
-    const newData = data.map((item) => {
-      if (item.id === id) {
-        return { ...item, selected: true };
-      } else {
-        return { ...item, selected: false };
-      }
-    });
-
-    setData(newData);
-  };
-  const saveText = () => {
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        id: selectedNoteId,
-        note: value,
-        selected: true,
-        label: 'Label',
-      }),
-    };
-    fetch('http://localhost:3000/note/' + selectedNoteId, options)
-      .then((res) => res.json())
-      .then((data) => toast.success(data.message));
-    setTimeout(() => {
-      getNotes();
-    }, DELAY_TIME);
+    setNoteList([...noteList, labelValue])
   };
 
-  const deleteText = () => {
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'DELETE',
-    };
-    fetch('http://localhost:3000/note/' + selectedNoteId, options)
-      .then((res) => res.json())
-      .then((data) => toast.warn(data.message));
-    setTimeout(() => {
-      getNotes();
-    }, DELAY_TIME);
-  };
-  const onChange = (e: any) => {
-    console.log(e);
-
-    setValue(e);
-    setTextareaValue(e);
-  };
-
-  const getNotes = () => {
-    setIsLoading(true);
-    fetch('http://localhost:3000/notes')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) setData(data);
-        return;
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    setTextareaValue(data.find((item) => item.selected)?.note || '');
-    setSetselectedNoteId(data.find((item) => item.selected)?.id || '');
-  }, [data]);
-
-  useEffect(() => {
-    getNotes();
-  }, []);
+  console.log(noteList);
 
   return (
-    <div className="noteapp flex-center">
-      <section className="noteapp-container">
-        <aside>
-          <div className="add-note__container">
-            <Button label="Note List" className="item__button item__header" />
-            {data.map((item) => {
-              return (
-                <Fragment key={item.id}>
-                  <Button
-                    label={item.label}
-                    onClick={() => selectNote(item.id)}
-                    icon={<StickyNote2 />}
-                    selected={item.selected}
-                  />
-                </Fragment>
-              );
-            })}
-          </div>
-          <div className="add-note__button-container flex-center">
-            <input
-              type="text"
-              ref={newNoteInput}
-              name="label-input"
-              id="label-input"
-              placeholder="New Note"
-              value={labelValue}
-              onChange={(e) => setLabelValue(e.target.value)}
-            />
-            <button onClick={addNote} className="flex-center">
-              <NoteAdd />
-            </button>
-          </div>
-        </aside>
-        <header>
-          <h5>Note Takin' App</h5>
+    <>
+      <div className="noteapp">
+        <header className="header">
+          <span className="header__title">Note App</span>
+          <button className="header__menu" type="button" onClick={() => setIsMenuOpen((prevState) => !prevState)}>
+            ---
+          </button>
         </header>
-        <main className={isLoading || data.length === 0 ? 'flex-center' : ''}>
-          {isLoading ? (
-            <span className="flex-center" style={{ height: '100%' }}>
-              <PuffLoader color="var(--primary)" />
-            </span>
-          ) : data.length !== 0 ? (
-            <div id={data.find((item) => item.selected)?.id || ''} ref={divRef} className="edit-container">
-              <ReactQuill className="note-editor" theme="snow" value={textareaValue} onChange={onChange} />
-            </div>
-          ) : (
-            <span className="flex-center" style={{ height: '100%' }}>
-              No notes have been created yet
-            </span>
-          )}
-        </main>
-        <footer>
-          {data.length > 0 ? (
-            <div className="action-buttons">
-              <Button label="Save" onClick={saveText} icon={<Save />} />
-              <Button label="Delete" onClick={deleteText} icon={<Delete />} />
-            </div>
-          ) : null}
-        </footer>
-      </section>
-      <ToastContainer autoClose={2000} />
-    </div>
+        <div className="rich-text">
+          <ReactQuill />
+        </div>
+        <div className="textarea">
+          <textarea name="textarea" id=""></textarea>
+        </div>
+      </div>
+      <div className={`note-list__overlay note-list__overlay--${isMenuOpen ? 'open' : 'close'}`}>
+        <div className={`note-list__menu note-list__menu--${isMenuOpen ? 'open' : 'close'}`}>
+          <ul className="list">
+            <li className="list-item list-item__title">
+              List Title <StickyNote2 />
+            </li>
+            <li className="list-item">İtem 1</li>
+            {noteList.length && noteList.map((i) => <li className="list-item">{i}</li>)}
+            <li className="list-item list-item__add-note">
+              <input
+                type="text"
+                name="add-note"
+                id="add-note"
+                placeholder="Yeni not ekle..."
+                onChange={(e) => setLabelValue(e.target.value)}
+                value={labelValue}
+              />
+              <button onClick={addNote}>
+                <NoteAdd />
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </>
   );
 }
 
