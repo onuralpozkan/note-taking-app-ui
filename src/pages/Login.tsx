@@ -57,7 +57,7 @@ export default function Login() {
       if (res.statusCode === 200) {
         toast.success(res.message);
         Cookies.set('token', res.token);
-
+        Cookies.set('username', data.get('username') as string);
         setTimeout(() => {
           navigate('/');
         }, 500);

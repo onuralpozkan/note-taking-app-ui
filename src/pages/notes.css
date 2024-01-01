@@ -1,0 +1,13 @@
+.note-editor {
+  width: 100%;
+}
+.note-editor__title {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 700;
+  margin: 1rem;
+}
+
+.ql-editor {
+  min-height: 400px;
+}

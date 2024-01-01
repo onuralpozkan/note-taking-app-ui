@@ -1,4 +1,6 @@
+import { AxiosResponse } from 'axios';
 import BaseHttpService from './BaseHttpService';
+import { Note } from '@/stores/types';
 
 export type RegisterUserType = {
   username: string;
@@ -11,8 +13,12 @@ export type LoginUserType = {
   password: string;
 };
 class NotesService extends BaseHttpService {
-  public async getNotes() {
+  public async getNotes(): Promise<AxiosResponse<Note[]>> {
     return this.get('api/notes');
+  }
+
+  public async saveNote(data: Note) {
+    return this.post('api/notes', data);
   }
 
   //   public async getUserById(userId: string) {

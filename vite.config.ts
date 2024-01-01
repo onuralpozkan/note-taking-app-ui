@@ -10,6 +10,7 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/assets/styles'),
       '@components': path.resolve(__dirname, './src/components'),
       '@pages': path.resolve(__dirname, './src/pages'),
+      '@common': path.resolve(__dirname, './src/common'),
     },
   },
   plugins: [react()],
