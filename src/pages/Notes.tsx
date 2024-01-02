@@ -6,6 +6,7 @@ import { useNotesStore } from '@/stores/notes.store';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './notes.css';
+import CreateNoteModal from '@/common/modal/src/modal';
 
 type Props = {};
 
@@ -21,16 +22,12 @@ const Notes = (props: Props) => {
   const [noteContent, setNoteContent] = useState('');
 
   const [note, setNote] = useState(
-    notes.filter((item) => item._id === selectedNoteId)[0]?.content || ''
+    notes.find((item) => item._id === selectedNoteId)?.content || ''
   );
 
   useEffect(() => {
-    setNote(
-      notes.filter((item) => item._id === selectedNoteId)[0]?.content || ''
-    );
-    setTitle(
-      notes.filter((item) => item._id === selectedNoteId)[0]?.title || ''
-    );
+    setNote(notes.find((item) => item._id === selectedNoteId)?.content || '');
+    setTitle(notes.find((item) => item._id === selectedNoteId)?.title || '');
   }, [selectedNoteId]);
 
   useEffect(() => {
@@ -50,6 +47,9 @@ const Notes = (props: Props) => {
 
   const logoutHandler = () => {
     Cookies.remove('token');
+    Cookies.remove('username');
+    setSelectedNoteId('');
+    setNotes([]);
     navigate('/login');
   };
 
@@ -71,6 +71,7 @@ const Notes = (props: Props) => {
       <button type="button" onClick={logoutHandler}>
         Logout
       </button>
+      <CreateNoteModal />
     </div>
   );
 };

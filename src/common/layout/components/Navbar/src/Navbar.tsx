@@ -8,7 +8,9 @@ import {
   ListItemButton,
 } from '@mui/material';
 import NoteIcon from '@mui/icons-material/NoteAlt';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useNotesStore } from '@/stores/notes.store';
+import { useModalStore } from '@/stores/modal.store';
 
 const Navbar = () => {
   const { notes, setSelectedNoteId, selectedNoteId } = useNotesStore();
@@ -17,6 +19,10 @@ const Navbar = () => {
     title,
     noteId: _id || '',
   }));
+
+  const { toggleModal } = useModalStore();
+
+  const createNoteHandler = () => {};
 
   return (
     <div>
@@ -40,6 +46,15 @@ const Navbar = () => {
         ) : (
           <ListItem>there is not any note</ListItem>
         )}
+
+        <ListItem sx={{ position: 'fixed', width: '240px', bottom: 0 }}>
+          <ListItemButton onClick={() => toggleModal(true)}>
+            <ListItemText primary={'Create a note'} />
+            <ListItemIcon>
+              <EditNoteIcon />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
     </div>
