@@ -11,3 +11,12 @@
 .ql-editor {
   min-height: 400px;
 }
+
+.note-editor__button-group {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.note-editor__button-group button:last-child {
+  margin-left: 0.5rem;
+}

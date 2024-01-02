@@ -6,7 +6,8 @@ import { useNotesStore } from '@/stores/notes.store';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './notes.css';
-import CreateNoteModal from '@/common/modal/src/modal';
+import { CreateNoteModal } from '@/common/modal/';
+import { Box, Button, ButtonGroup } from '@mui/material';
 
 type Props = {};
 
@@ -53,24 +54,39 @@ const Notes = (props: Props) => {
     navigate('/login');
   };
 
-  const saveNoteHandler = () => {
-    const newNote = {
+  const updateNoteHandler = () => {
+    const updatedNote = {
       content: note,
       title: title,
     };
-    notesService.saveNote(newNote);
+    notesService.updateNote(selectedNoteId, updatedNote);
+  };
+
+  const deleteNoteHandler = () => {
+    notesService.deleteNote(selectedNoteId).then((response) => {
+      console.log('response', response);
+      window.location.reload();
+    });
   };
 
   return (
     <div className="note-editor">
       <h1 className="note-editor__title">Start taking notes!</h1>
       <ReactQuill theme="snow" value={note} onChange={setNote} />
-      <button type="button" onClick={saveNoteHandler}>
-        Save Notes
-      </button>
-      <button type="button" onClick={logoutHandler}>
-        Logout
-      </button>
+      <Box className="note-editor__button-group">
+        <Button
+          variant="contained"
+          onClick={updateNoteHandler}
+          disabled={
+            note === notes.find((item) => item._id === selectedNoteId)?.content
+          }
+        >
+          Save Notes
+        </Button>
+        <Button variant="outlined" onClick={deleteNoteHandler} color="error">
+          Delete
+        </Button>
+      </Box>
       <CreateNoteModal />
     </div>
   );

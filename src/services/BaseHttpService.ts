@@ -87,6 +87,18 @@ class BaseHttpService {
     return this.request<T>({ ...config, method: 'POST', url, data });
   }
 
+  public async put<T, K>(
+    url: string,
+    data: K,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    return this.request<T>({ ...config, method: 'PUT', url, data });
+  }
+
+  public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE', url });
+  }
+
   // Add other HTTP methods (PUT, DELETE, etc.) if needed
 }
 

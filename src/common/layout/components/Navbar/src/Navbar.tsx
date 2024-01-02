@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import NoteIcon from '@mui/icons-material/NoteAlt';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { useNotesStore } from '@/stores/notes.store';
 import { useModalStore } from '@/stores/modal.store';
 
@@ -37,7 +38,7 @@ const Navbar = () => {
                 selected={selectedNoteId === noteId}
               >
                 <ListItemIcon>
-                  <NoteIcon />
+                  <TextSnippetIcon />
                 </ListItemIcon>
                 <ListItemText primary={title} />
               </ListItemButton>

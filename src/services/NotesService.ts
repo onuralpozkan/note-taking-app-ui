@@ -21,6 +21,13 @@ class NotesService extends BaseHttpService {
     return this.post('api/notes', data);
   }
 
+  public async updateNote(noteId: string, data: Note) {
+    return this.put(`api/notes/${noteId}`, data);
+  }
+  public async deleteNote(noteId: string): Promise<AxiosResponse<Note>> {
+    return this.delete(`api/notes/${noteId}`);
+  }
+
   //   public async getUserById(userId: string) {
   //     return this.get<User>(`/users/${userId}`);
   //   }
