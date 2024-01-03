@@ -8,15 +8,13 @@ import NotesService from '@/services/NotesService';
 import { useNotesStore } from '@/stores/notes.store';
 import './modal.css';
 
-type Props = {};
-
-const CreateNoteModal = (props: Props) => {
+const CreateNoteModal = () => {
   const notesService = new NotesService();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { isModalOpen, toggleModal } = useModalStore();
-  const { selectedNoteId, setSelectedNoteId, setNotes } = useNotesStore();
+  const { setSelectedNoteId, setNotes } = useNotesStore();
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -55,8 +53,6 @@ const CreateNoteModal = (props: Props) => {
         toggleModal(false);
       });
   };
-
-  console.log({ isModalOpen });
 
   return (
     <Modal

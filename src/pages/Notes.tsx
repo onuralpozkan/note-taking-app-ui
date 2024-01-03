@@ -36,7 +36,6 @@ const Notes = () => {
         const notesArray = res.data;
         setSelectedNoteId(res.data[0]._id);
         setNotes(notesArray);
-        console.log({ res });
       });
   }, []);
 
@@ -49,16 +48,10 @@ const Notes = () => {
   };
 
   const deleteNoteHandler = () => {
-    notesService.deleteNote(selectedNoteId).then((response) => {
-      console.log('response', response);
+    notesService.deleteNote(selectedNoteId).then(() => {
       window.location.reload();
     });
   };
-
-  console.log({
-    note,
-    noteFromDb: notes.find((item) => item._id === selectedNoteId)?.content,
-  });
 
   if (!notes.length)
     return (
