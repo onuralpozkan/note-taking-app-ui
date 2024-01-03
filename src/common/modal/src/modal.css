@@ -1,0 +1,11 @@
+.modal-box {
+  padding: 0.5rem;
+  min-width: 80%;
+}
+@media screen and (min-width: 768px) {
+  .modal-box {
+    min-width: unset;
+    width: 720px;
+    padding: 1.5rem;
+  }
+}

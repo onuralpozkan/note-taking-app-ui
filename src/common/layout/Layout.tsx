@@ -64,7 +64,7 @@ export default function Layout(props: Props) {
               },
             }}
           >
-            <Navbar />
+            <Navbar setMobile={setMobileOpen} />
           </Drawer>
           <Drawer
             variant="permanent"
@@ -77,7 +77,7 @@ export default function Layout(props: Props) {
             }}
             open
           >
-            <Navbar />
+            <Navbar setMobile={setMobileOpen} />
           </Drawer>
         </Box>
         <StyledBox

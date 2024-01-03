@@ -17,24 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '@/common/layout/components/Copyright/Copyright';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -79,7 +62,7 @@ export default function Login() {
           md={7}
           sx={{
             backgroundImage:
-              'url(https://source.unsplash.com/random?wallpapers)',
+              'url(https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -131,10 +114,10 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -144,18 +127,20 @@ export default function Login() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link href="register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
+                <Grid item xs={12} position={'fixed'} bottom={0}>
+                  <Copyright
+                    sx={{
+                      mt: 5,
+                      p: 1,
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

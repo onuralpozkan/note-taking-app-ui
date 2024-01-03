@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNotesStore } from '@/stores/notes.store';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AccountCircle } from '@mui/icons-material';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -22,18 +22,10 @@ interface AppbarProps extends MuiAppBarProps {
 
 const Appbar = (props: AppbarProps) => {
   const { handleDrawerToggle, drawerWidth } = props;
-
-  const { setNotes, setSelectedNoteId } = useNotesStore();
-  const navigate = useNavigate();
-  const [noteTitle, setNoteTitle] = useState('');
-  const { notes, selectedNoteId } = useNotesStore();
-
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { setNotes, setSelectedNoteId } = useNotesStore();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
+  const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,20 +42,6 @@ const Appbar = (props: AppbarProps) => {
     setNotes([]);
     navigate('/login');
   };
-
-  useEffect(() => {
-    const selectedNoteTitle = notes.find(
-      (item) => item._id === selectedNoteId
-    )?.title;
-
-    const isHomePage = window.location.pathname === '/';
-    console.log(window.location.pathname, isHomePage);
-    if (isHomePage) {
-      setNoteTitle(selectedNoteTitle || 'Loading...');
-    } else {
-      setNoteTitle("Note takin' app");
-    }
-  }, [selectedNoteId]);
 
   return (
     <AppBar
@@ -84,7 +62,7 @@ const Appbar = (props: AppbarProps) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          {noteTitle}
+          Note takin' app
         </Typography>
         <Box>
           <IconButton

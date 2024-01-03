@@ -18,24 +18,7 @@ import UserService, { RegisterUserType } from '@/services/UserService';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '@/common/layout/components/Copyright/Copyright';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -158,14 +141,6 @@ export default function Register() {
                   <FormHelperText>Test</FormHelperText>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -177,15 +152,23 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
+      <Copyright
+        sx={{
+          mt: 5,
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+          p: 1,
+        }}
+      />
     </ThemeProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useModalStore } from '@/stores/modal.store';
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import NotesService from '@/services/NotesService';
 import { useNotesStore } from '@/stores/notes.store';
+import './modal.css';
 
 type Props = {};
 
@@ -21,11 +22,9 @@ const CreateNoteModal = (props: Props) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    minWidth: 300,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 5,
   };
   const rowStyle = {
     display: 'flex',
@@ -56,6 +55,9 @@ const CreateNoteModal = (props: Props) => {
         toggleModal(false);
       });
   };
+
+  console.log({ isModalOpen });
+
   return (
     <Modal
       open={isModalOpen}
@@ -63,7 +65,7 @@ const CreateNoteModal = (props: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={style} className="modal-box">
         <Box sx={rowStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Create a note!

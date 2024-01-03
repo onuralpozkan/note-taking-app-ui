@@ -6,12 +6,9 @@ import { useNotesStore } from '@/stores/notes.store';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './notes.css';
-import { CreateNoteModal } from '@/common/modal/';
-import { Box, Button, ButtonGroup } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
-type Props = {};
-
-const Notes = (props: Props) => {
+const Notes = () => {
   const navigate = useNavigate();
   const notesService = new NotesService();
   const { setNotes, selectedNoteId, setSelectedNoteId, notes } =
@@ -19,8 +16,6 @@ const Notes = (props: Props) => {
   const [title, setTitle] = useState(
     notes.filter((item) => item._id === selectedNoteId)[0]?.title || ''
   );
-
-  const [noteContent, setNoteContent] = useState('');
 
   const [note, setNote] = useState(
     notes.find((item) => item._id === selectedNoteId)?.content || ''
@@ -38,21 +33,12 @@ const Notes = (props: Props) => {
 
     if (!selectedNoteId)
       notesService.getNotes().then((res: any) => {
-        console.log('*********getNotes');
         const notesArray = res.data;
         setSelectedNoteId(res.data[0]._id);
         setNotes(notesArray);
         console.log({ res });
       });
   }, []);
-
-  const logoutHandler = () => {
-    Cookies.remove('token');
-    Cookies.remove('username');
-    setSelectedNoteId('');
-    setNotes([]);
-    navigate('/login');
-  };
 
   const updateNoteHandler = () => {
     const updatedNote = {
@@ -69,6 +55,18 @@ const Notes = (props: Props) => {
     });
   };
 
+  console.log({
+    note,
+    noteFromDb: notes.find((item) => item._id === selectedNoteId)?.content,
+  });
+
+  if (!notes.length)
+    return (
+      <div className="note-editor">
+        <h1 className="note-editor__title">No notes have been created yet!</h1>
+      </div>
+    );
+
   return (
     <div className="note-editor">
       <h1 className="note-editor__title">Start taking notes!</h1>
@@ -77,9 +75,9 @@ const Notes = (props: Props) => {
         <Button
           variant="contained"
           onClick={updateNoteHandler}
-          disabled={
-            note === notes.find((item) => item._id === selectedNoteId)?.content
-          }
+          disabled={notes
+            .find((item) => item._id === selectedNoteId)
+            ?.content.includes(note)}
         >
           Save Notes
         </Button>
@@ -87,7 +85,6 @@ const Notes = (props: Props) => {
           Delete
         </Button>
       </Box>
-      <CreateNoteModal />
     </div>
   );
 };

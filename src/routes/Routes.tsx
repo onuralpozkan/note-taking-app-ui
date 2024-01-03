@@ -4,6 +4,7 @@ import Register from '@/pages/Register';
 import Layout from '@/common/layout/Layout';
 import { createBrowserRouter } from 'react-router-dom';
 import Profile from '@/pages/Profile';
+import { CreateNoteModal } from '@/common/modal';
 
 export const router = createBrowserRouter([
   {
@@ -12,11 +13,16 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Notes />,
+        element: (
+          <>
+            <Notes />
+            <CreateNoteModal />
+          </>
+        ),
       },
       {
-        path: '/login',
-        element: <Login />,
+        path: '/profile',
+        element: <Profile />,
       },
     ],
   },
@@ -25,7 +31,7 @@ export const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: '/profile',
-    element: <Profile />,
+    path: '/login',
+    element: <Login />,
   },
 ]);
