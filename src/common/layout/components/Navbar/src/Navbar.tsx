@@ -12,9 +12,12 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { useNotesStore } from '@/stores/notes.store';
 import { useModalStore } from '@/stores/modal.store';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 type Navbar = {
   setMobile: (arg: boolean) => void;
 };
+
 const Navbar = ({ setMobile }: Navbar) => {
   const { notes, setSelectedNoteId, selectedNoteId } = useNotesStore();
   const navigate = useNavigate();
@@ -27,6 +30,7 @@ const Navbar = ({ setMobile }: Navbar) => {
 
   const noteSelectHandler = (noteId: string) => {
     const pathname = window.location.pathname;
+    Cookies.set('selectedNoteId', noteId);
 
     if (pathname !== 'notes') {
       navigate('/');
@@ -34,6 +38,7 @@ const Navbar = ({ setMobile }: Navbar) => {
 
     setSelectedNoteId(noteId);
   };
+
   return (
     <div>
       <Toolbar />

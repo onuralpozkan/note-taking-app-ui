@@ -13,17 +13,19 @@ const Notes = () => {
   const notesService = new NotesService();
   const { setNotes, selectedNoteId, setSelectedNoteId, notes } =
     useNotesStore();
-  const [title, setTitle] = useState(
-    notes.filter((item) => item._id === selectedNoteId)[0]?.title || ''
-  );
 
-  const [note, setNote] = useState(
-    notes.find((item) => item._id === selectedNoteId)?.content || ''
-  );
+  const initialTitle =
+    notes.find((item) => item._id === selectedNoteId)?.title || '';
+  const initialNote =
+    notes.find((item) => item._id === selectedNoteId)?.content || '';
+
+  const [title, setTitle] = useState(initialTitle);
+
+  const [note, setNote] = useState(initialNote);
 
   useEffect(() => {
-    setNote(notes.find((item) => item._id === selectedNoteId)?.content || '');
-    setTitle(notes.find((item) => item._id === selectedNoteId)?.title || '');
+    setNote(initialNote);
+    setTitle(initialTitle);
   }, [selectedNoteId]);
 
   useEffect(() => {
@@ -32,9 +34,18 @@ const Notes = () => {
     }
 
     if (!selectedNoteId)
-      notesService.getNotes().then((res: any) => {
+      notesService.getNotes().then((res) => {
         const notesArray = res.data;
-        setSelectedNoteId(res.data[0]._id);
+        const selectedId = Cookies.get('selectedNoteId') || selectedNoteId;
+        
+        if (notesArray.length === 1) {
+          setSelectedNoteId(notesArray[0]._id);
+        } else {
+          setSelectedNoteId(
+            notesArray.find((item) => item._id === selectedId)?._id || ''
+          );
+        }
+
         setNotes(notesArray);
       });
   }, []);
@@ -44,7 +55,9 @@ const Notes = () => {
       content: note,
       title: title,
     };
-    notesService.updateNote(selectedNoteId, updatedNote);
+    notesService.updateNote(selectedNoteId, updatedNote).then(() => {
+      window.location.reload();
+    });
   };
 
   const deleteNoteHandler = () => {

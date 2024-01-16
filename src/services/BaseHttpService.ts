@@ -20,9 +20,6 @@ class BaseHttpService {
 
     this.axiosInstance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        // You can modify headers or add tokens here before the request is sent
-        // For example:
-        // config.headers.Authorization = `Bearer ${getToken()}`;
         const token = Cookies.get('token');
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
@@ -35,33 +32,6 @@ class BaseHttpService {
       }
     );
   }
-
-  // private setupInterceptors() {
-  //   this.axiosInstance.interceptors.request.use(
-  //     (config: AxiosRequestConfig) => {
-  //       // You can modify headers or add tokens here before the request is sent
-  //       // For example:
-  //       // config.headers.Authorization = `Bearer ${getToken()}`;
-
-  //       return config;
-  //     },
-  //     (error) => {
-  //       // Handle request errors here
-  //       return Promise.reject(error);
-  //     }
-  //   );
-
-  //   this.axiosInstance.interceptors.response.use(
-  //     (response: AxiosResponse) => {
-  //       // Handle successful responses globally (if needed)
-  //       return response;
-  //     },
-  //     (error) => {
-  //       // Handle response errors globally (if needed)
-  //       return Promise.reject(error);
-  //     }
-  //   );
-  // }
 
   private async request<T>(config: AxiosRequestConfig): Promise<T> {
     try {
@@ -98,8 +68,6 @@ class BaseHttpService {
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE', url });
   }
-
-  // Add other HTTP methods (PUT, DELETE, etc.) if needed
 }
 
 export default BaseHttpService;
