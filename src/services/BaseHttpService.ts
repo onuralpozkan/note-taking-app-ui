@@ -1,10 +1,12 @@
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
 import Cookies from 'js-cookie';
+import { LoginResponseType } from './UserService';
 
 class BaseHttpService {
   private axiosInstance: AxiosInstance;
@@ -26,9 +28,19 @@ class BaseHttpService {
         }
         return config;
       },
-      (error) => {
-        // Handle request errors here
-        return Promise.reject(error);
+      (error: AxiosError<{ statusCode: number; message: string }>) => {
+        if (error.response && error.response.status === 401) {
+          return Promise.resolve(error.response?.data);
+        }
+      }
+    );
+
+    this.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        return response;
+      },
+      (error: AxiosError<LoginResponseType>) => {
+        return Promise.resolve(error.response);
       }
     );
   }
@@ -40,7 +52,6 @@ class BaseHttpService {
       );
       return response.data;
     } catch (error) {
-      // Handle errors here
       throw error;
     }
   }

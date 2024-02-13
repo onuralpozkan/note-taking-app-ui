@@ -10,7 +10,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import UserService, { LoginUserType } from '@/services/UserService';
+import userService, {
+  LoginResponseType,
+  LoginUserType,
+} from '@/services/UserService';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,8 +24,8 @@ import Copyright from '@/common/layout/components/Copyright/Copyright';
 const defaultTheme = createTheme();
 
 export default function Login() {
-  const userService = new UserService();
   const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -30,16 +33,16 @@ export default function Login() {
       username: data.get('username') as string,
       password: data.get('password') as string,
     };
-    userService.loginUser(userData).then((res: any) => {
-      if (res.statusCode === 200) {
-        toast.success(res.message);
-        Cookies.set('token', res.token);
+    userService.loginUser(userData).then((response) => {
+      if (response.statusCode === 200) {
+        toast.success(response.message);
+        Cookies.set('token', response.token);
         Cookies.set('username', data.get('username') as string);
         setTimeout(() => {
           navigate('/');
         }, 500);
       } else {
-        toast.error(res.message);
+        toast.error(response.message);
       }
     });
   };

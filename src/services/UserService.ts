@@ -7,27 +7,24 @@ export type RegisterUserType = {
 };
 
 export type LoginUserType = {
-    username: string;
-    password: string;
-  };
+  username: string;
+  password: string;
+};
+
+export type LoginResponseType = {
+  statusCode: number;
+  message: string;
+  token: string;
+};
+
 class UserService extends BaseHttpService {
   public async registerUser(data: RegisterUserType) {
     return this.post('api/auth/register', data);
   }
 
-  public async loginUser(data: LoginUserType) {
+  public async loginUser(data: LoginUserType): Promise<LoginResponseType> {
     return this.post('api/auth/login', data);
   }
-
-  //   public async getUserById(userId: string) {
-  //     return this.get<User>(`/users/${userId}`);
-  //   }
-
-  //   public async updateUser(userId: string, updatedData: Partial<User>) {
-  //     return this.put<User>(`/users/${userId}`, updatedData);
-  //   }
-
-  // You can add more methods for user-related API calls
 }
 
-export default UserService;
+export default new UserService();

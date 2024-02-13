@@ -30,16 +30,6 @@ class NotesService extends BaseHttpService {
   public async deleteNote(noteId: string): Promise<AxiosResponse<Note>> {
     return this.delete(`api/notes/${noteId}`);
   }
-
-  //   public async getUserById(userId: string) {
-  //     return this.get<User>(`/users/${userId}`);
-  //   }
-
-  //   public async updateUser(userId: string, updatedData: Partial<User>) {
-  //     return this.put<User>(`/users/${userId}`, updatedData);
-  //   }
-
-  // You can add more methods for user-related API calls
 }
 
 export default NotesService;
